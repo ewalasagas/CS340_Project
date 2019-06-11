@@ -8,7 +8,6 @@
 		<th>Enrollment Type</th>
 		<th>Enrollment Quarter</th>
 		<th>Enrollment Year</th>
-		<th>Delete</th>			<!--this is a button to student_classes -->
 		<th>Update</th>			<!--space for edit button -->
 	</thead>
 	<tbody>
@@ -20,7 +19,6 @@
 			<td>{{type}}</td>
 			<td>{{enrollment_qtr}}</td>
 			<td>{{enrollment_year}}</td>
-			<td><button onclick="deleteStudent({{student_id}})">Delete</button></td>
 			<td><a href="/student/{{student_id}}">Edit</a></td>	
 		</tr>
 		{{/each}}

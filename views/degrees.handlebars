@@ -1,13 +1,13 @@
 <h1>List of Degrees</h1>
-<p>Please see below for list of degrees at OSU. Delete/add/filter/Search are all working!</p>
+<p>Please see below for list of degrees at OSU. * Indicate required entry.</p>
 
 <p>Please let us know if more features/filters should be added</p>
 
 <h3>Add a new degree field</h3>
 <form id="add_degree" action="/degrees" method="post">
-    Type: <input type="text" name="degree_type">
+    *Type: <input type="text" name="degree_type" required>
     <br><br>
-    Field:<input type="text" name="field">
+    *Field: <input type="text" name="field" required>
     <br><br>
     <input type="submit" value="Add Degree">
  </form>

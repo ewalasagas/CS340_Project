@@ -1,11 +1,11 @@
 
 <h1>List of Academic Ranks</h1>
-<p>Please see below for list of academic ranks at OSU.  Delete/add/search are all working! Fiter is not necessary in this page because there is only one attribute per primary key (this would be a one-to-one search, which didn't seem useful for this table.) </p>
+<p>Please see below for list of academic ranks at OSU.  Delete/add/search are all working! Fiter is not necessary in this page because there is only one attribute per primary key (this would be a one-to-one search, which didn't seem useful for this table.) * Indicate required entry.</p>
 <p>Please let us know if more features/filters should be added</p>
 
 <h3>Add a new academic rank</h3>
 <form id="add_AcademicRank" action="/academic_rank" method="post">
-	Rank Name: <input type="text" name="name">
+	*Rank Name: <input type="text" name="name" required>
 	<br><br>
 	<input type="submit" value="Add Rank">
 	</form>
@@ -14,7 +14,7 @@
 <h3>Search Data</h3>
 <form id='search_academic_rank' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search people for Academic Rank starting with:</label>
+    <label> Search Academic Rank starting with:</label>
     <input id='first_name_search_string' type='text' name='first_name_search_string' value=''>
     <input type="button" value="Search" onclick="searchAcademicRank()">
 </form>

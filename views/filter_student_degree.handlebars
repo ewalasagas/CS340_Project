@@ -8,7 +8,6 @@
         <th>Degree ID</th> 
         <th>Degree Type</th>
         <th>Degree Field</th>
-        <th>Delete</th>
     </thead> 
     <tbody> 
         {{#each student_degree}} 
@@ -18,7 +17,6 @@
             <td>{{degree_id}}</td> 
             <td>{{degree_type}}</td> 
             <td>{{field}}</td>
-            <td><button onclick="deleteStudentDegree({{degree_id}})">Delete</button></td>
         </tr>
         {{/each}} 
 

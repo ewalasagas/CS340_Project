@@ -1,21 +1,18 @@
 <h1>List of OSU Courses</h1>
-<p>Please see below for list of degrees at OSU.  Delete/add/filter/Search are all working!
-
-<p>Please let us know if more features/filters should be added</p>
-
+<p>List of CS classes at OSU.  * Indicate required entry.</p>
 
 <h3>Add new class</h3>
 <form id="addClass" action="/class" method="post">
-    Class Name: <input type="text" name="class_name">
+    *Class Name: <input type="text" name="class_name">
     <br><br>
     Class Prerequisite: <input type="text" name="prerequisite">
     <br><br>
     Quarter Available: <br>
     <select name="qtr_offered">
-        <option value="Fall,">FALL</option>
-        <option value ="Winter,">WINTER</option>
-        <option value ="Spring,">SPRING</option>
-        <option value ="Summer,">SUMMER</option>
+        <option value="FALL">FALL</option>
+        <option value ="WINTER">WINTER</option>
+        <option value ="SPRING">SPRING</option>
+        <option value ="SUMMER">SUMMER</option>
         <option value="all">all</option>
     </select>
     <br><br> 
@@ -33,12 +30,10 @@
 <form id='filter_class' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
     <label> Filter by quarter offered: </label>
-    <select id='qtr_offered_filter' name="qtr_offered"> 
-        <option value="Fall,">FALL</option>
-        <option value ="Winter,">WINTER</option>
-        <option value ="Spring,">SPRING</option>
-        <option value ="Summer,">SUMMER</option>
-        <option value="all">all</option>
+    <select id="qtr_offered_filter" name="qtr_offered"> 
+    {{#each classesForm}}
+    <option value="{{qtr_offered}}">{{qtr_offered}}</option>
+    {{/each}}
     </select>
     <input type="button" value="Filter" onclick="filterQtrOffered()">
 </form>

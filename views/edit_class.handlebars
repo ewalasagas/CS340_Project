@@ -8,12 +8,12 @@
     Class Prerequisite: <input type="text" name="prerequisite" id="prerequisite" value="{{prerequisite}}">
 {{/each}}
     <br><br>
-    Quarter Available: <br>
-    <select name="qtr_offered" name="qtr_offered" id="qtr_offered">
-        <option value="Fall,">FALL</option>
-        <option value ="Winter,">WINTER</option>
-        <option value ="Spring,">SPRING</option>
-        <option value ="Summer,">SUMMER</option>
+    Quarter Available <br><em>Hold down the Ctrl (windows) / Command (Mac) button to select multiple options</em>: <br>
+    <select multiple name="qtr_offered" name="qtr_offered" id="qtr_offered">
+        <option value="FALL ">FALL</option>
+        <option value ="WINTER ">WINTER</option>
+        <option value ="SPRING ">SPRING</option>
+        <option value ="SUMMER ">SUMMER</option>
         <option value="all">all</option>
     </select>
     <br><br> 
@@ -27,27 +27,6 @@
 </form>
 <br>
 
-<h3>Filter Data</h3>
-<form id='filter_instructor' action='' method=''>
-<!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Filter by instructor </label>
-    <select id='rank_filter' name="academic_rank"> 
-        {{#each academic_rank}}
-        <option value="{{rank_id}}">{{name}}</option>
-        {{/each}}
-    </select>
-    <input type="button" value="Filter" onclick="filterbyInstructor()">
-</form>
-<br>
-
-<h3>Search Data</h3>
-<form id='search_instructor' action='' method=''>
-<!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search class starting with:</label>
-    <input id='first_name_search_string' type='text' name='first_name_search_string' value=''>
-    <input type="button" value="Search" onclick="searchPeopleByFirstName()">
-</form>
-<br>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -62,6 +41,7 @@ event.preventDefault();
 
 var class_id = $('#class_id').val();
 var class_name = $('#class_name').val();
+var prerequisite = $('#prerequisite').val();
 var qtr_offered = $('#qtr_offered').val();
 var instructor = $('#instructor').val();
 
@@ -70,6 +50,7 @@ var instructor = $('#instructor').val();
         type: 'PUT',
         data: "class_id="+class_id+
                 "&class_name="+class_name+
+                "&prerequisite="+prerequisite+
                 "&qtr_offered="+qtr_offered+
                 "&instructor="+instructor,
 

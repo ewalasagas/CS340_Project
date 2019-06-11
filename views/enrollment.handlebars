@@ -1,22 +1,14 @@
 <h1>List of Enrollment Types</h1>
-<p>List of the types of enrollments at OSU.  Delete/add/search are all working! Fiter is not necessary in this page because there is only one attribute per primary key (this would be a one-to-one search, which didn't seem useful for this table.)</p>
+<p>List of the types of enrollments at OSU. * Indicate required entry.</p>
 
 <h3>Add new enrollment</h3>
 <form id="addenrollment" action="/enrollment" method="post">
-    Type: <input type="text" name="type">
+    *Type: <input type="text" name="type" required>
     <br><br>
     <input type="submit" value="Add Enrollment">
  </form>
 <br>
 
-<h3>Search Data</h3>
-<form id='search_enrollment' action='' method=''>
-<!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search for degree field starting with:</label>
-    <input id='first_name_search_string' type='text' name='first_name_search_string' value=''>
-    <input type="button" value="Search" onclick="searchDegreesByField()">
-</form>
-<br>
 
 
 <h3>List of current enrollment types</h3>

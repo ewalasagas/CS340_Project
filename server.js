@@ -10,6 +10,8 @@ app.set('view engine', 'handlebars');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(express.static('public'));
+app.use(express.static('views')); 
 
 app.set('port', 8123);
 
@@ -190,7 +192,7 @@ app.put('/enrollment', function(req,res){
 //TO DISPLAY -- function to display student table (all)
 function getStudent(res, db, context, complete){
    db.query(`SELECT student.student_id, student.first_name, student.last_name, 
-    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student JOIN 
+    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student LEFT JOIN 
     enrollment_type ON enrollment_type.enrollment_id = student.enrollment_type`, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -254,7 +256,7 @@ app.delete('/student/:student_id', function(req,res){
 //TO EDIT -- function to get select specific student for edit 
 function getStudentSpecific(res, db, context, complete){
    var sql = `SELECT student.student_id, student.first_name, student.last_name, 
-    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student JOIN 
+    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student LEFT JOIN 
     enrollment_type ON enrollment_type.enrollment_id = student.enrollment_type 
     WHERE student.student_id = ?`;
     var inserts = [context.student_id];
@@ -309,7 +311,7 @@ app.put('/student', function(req,res){
 //TO FILTER STUDENT -- function to get select specific year 
 function getStudentYear(res, db, context, complete){
    var sql = `SELECT student.student_id, student.first_name, student.last_name, 
-    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student JOIN 
+    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student LEFT JOIN 
     enrollment_type ON enrollment_type.enrollment_id = student.enrollment_type 
     WHERE student.enrollment_year = ?`;
     var inserts = [context.enrollment_year];
@@ -344,16 +346,16 @@ app.get('/filter/student/:enrollment_year',function(req,res){
 function getStudentsWithNameLike(req, res, db, context, complete) {
 //sanitize the input as well as include the % character
 var query = `SELECT student.student_id, student.first_name, student.last_name, 
-    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student JOIN 
+    enrollment_type.type, student.enrollment_qtr, student.enrollment_year FROM student LEFT JOIN 
     enrollment_type ON enrollment_type.enrollment_id = student.enrollment_type 
-    WHERE student.first_name LIKE` + db.escape(req.params.s + '%');
+    WHERE student.first_name LIKE ` + db.escape(req.params.s + '%');
  console.log(query);
       db.query(query, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.students = results;
+            context.student = results;
             complete();
         });
 }
@@ -401,10 +403,10 @@ function getClass_Student(res, db, context, complete){
 
 //TO DISPLAY -- Function for student_ckass for table display
 function getTableStudent_Class(res, db, context, complete){
-   db.query(`SELECT student.first_name, student.last_name, student_class.class_id, class.class_name 
+   db.query(`SELECT DISTINCT student.first_name, student.last_name, student_class.class_id, class.class_name 
     FROM student 
-    JOIN student_class ON student_class.student_id = student.student_id
-    JOIN class ON class.class_id = student_class.class_id`, function(error, results, fields){
+    LEFT JOIN student_class ON student_class.student_id = student.student_id
+    LEFT JOIN class ON class.class_id = student_class.class_id`, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
@@ -471,8 +473,8 @@ app.post('/student_class', function(req, res){
 function getStudent_ClassFilter(res, db, context, complete){
    var sql = `SELECT student.first_name, student.last_name, student_class.class_id, class.class_name 
     FROM student 
-    JOIN student_class ON student_class.student_id = student.student_id
-    JOIN class ON class.class_id = student_class.class_id
+    LEFT JOIN student_class ON student_class.student_id = student.student_id
+    LEFT JOIN class ON class.class_id = student_class.class_id
     WHERE student_class.class_id = ?`;
     var inserts = [context.class_id];
     db.query(sql, inserts, function(error, results, fields){
@@ -510,8 +512,8 @@ app.get('/filter/student_class/:class_id', function(req,res){
 function getStudents_ClassLike(req, res, db, context, complete) {
 var query = `SELECT student.first_name, student.last_name, student_class.class_id, class.class_name 
     FROM student 
-    JOIN student_class ON student_class.student_id = student.student_id
-    JOIN class ON class.class_id = student_class.class_id
+    LEFT JOIN student_class ON student_class.student_id = student.student_id
+    LEFT JOIN class ON class.class_id = student_class.class_id
     WHERE student.first_name LIKE` + db.escape(req.params.s + '%');
      console.log(query);
       db.query(query, function(error, results, fields){
@@ -604,7 +606,7 @@ function getInstructor(res, db, context, complete){
   console.log("In getInstructor function");
 db.query(`SELECT instructor.instructor_id, instructor.first_name, 
     instructor.last_name, academic_rank.name FROM instructor 
-    JOIN academic_rank ON academic_rank.rank_id = instructor.academic_rank`, function(error, results, fields){
+    LEFT JOIN academic_rank ON academic_rank.rank_id = instructor.academic_rank`, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
@@ -683,7 +685,7 @@ function getInstructor_Rank (res, db, context, complete) {
   console.log("In getInstructor function");
 db.query(`SELECT instructor.instructor_id, instructor.first_name, 
     instructor.last_name, academic_rank.name FROM instructor 
-    JOIN academic_rank ON academic_rank.rank_id = instructor.academic_rank
+    LEFT JOIN academic_rank ON academic_rank.rank_id = instructor.academic_rank
     WHERE instructor.academic_rank = ?`, [context.rank_id], function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -771,7 +773,7 @@ function getPeopleWithNameLike(req, res, db, context, complete) {
 //sanitize the input as well as include the % character
 var query = `SELECT instructor.instructor_id, instructor.first_name, 
     instructor.last_name, academic_rank.name FROM instructor 
-    JOIN academic_rank ON academic_rank.rank_id = instructor.academic_rank 
+    LEFT JOIN academic_rank ON academic_rank.rank_id = instructor.academic_rank 
     WHERE instructor.first_name LIKE` + db.escape(req.params.s + '%');
  console.log(query);
       db.query(query, function(error, results, fields){
@@ -919,10 +921,10 @@ app.put('/academic_rank', function(req,res){
 /****************** CLASS PAGE *************************/
 //TO DISPLAY -- Function for class table 
 function getTable_Class(res, db, context, complete){
-   db.query(`SELECT class.class_id, class.class_name, class.prerequisite, 
+   db.query(`SELECT class.class_name, class.prerequisite, 
     class.qtr_offered, instructor.first_name, instructor.last_name
     FROM class
-    JOIN instructor ON instructor.instructor_id = class.instructor`, function(error, results, fields){
+    LEFT JOIN instructor ON instructor.instructor_id = class.instructor `, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
@@ -950,9 +952,10 @@ app.get('/class',function(req,res){
   var context = {};
   getTable_Class(res, db, context, complete);
   getInstructor_Class(res, db, context, complete);
+  getQtrOfferedForm(res, db, context, complete);
   function complete() {
     callbackCount++;
-    if(callbackCount >= 2){
+    if(callbackCount >= 3){
       console.log(context);
       res.render('class', context)
     }
@@ -996,7 +999,7 @@ function getClassSpecific(res, db, context, complete){
     db.query(`SELECT class.class_id, class.class_name, class.prerequisite, 
     class.qtr_offered, instructor.first_name, instructor.last_name
     FROM class
-    JOIN instructor ON instructor.instructor_id = class.instructor
+    LEFT JOIN instructor ON instructor.instructor_id = class.instructor
     WHERE class.class_id= ?`, [context.class_id], function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -1045,12 +1048,12 @@ app.put('/class', function(req,res){
 });
 
 //TO SEARCH -- function to search instructor whose first name like
-function getStudentsWithNameLike(req, res, db, context, complete) {
+function getIntsWithNameLike(req, res, db, context, complete) {
 //sanitize the input as well as include the % character
 var query = `SELECT class.class_id, class.class_name, class.prerequisite, 
     class.qtr_offered, instructor.first_name, instructor.last_name
     FROM class
-    JOIN instructor ON instructor.instructor_id = class.instructor
+    LEFT JOIN instructor ON instructor.instructor_id = class.instructor
     WHERE instructor.first_name LIKE` + db.escape(req.params.s + '%');
  console.log(query);
       db.query(query, function(error, results, fields){
@@ -1083,8 +1086,8 @@ function getQtrOffered (res, db, context, complete) {
 db.query(`SELECT class.class_id, class.class_name, class.prerequisite, 
     class.qtr_offered, instructor.first_name, instructor.last_name
     FROM class
-    JOIN instructor ON instructor.instructor_id = class.instructor
-    WHERE class.qtr_offered=?`, [context.qtr_offered], function(error, results, fields){
+    LEFT JOIN instructor ON instructor.instructor_id = class.instructor
+    WHERE class.qtr_offered =?`, [context.qtr_offered], function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
@@ -1094,6 +1097,21 @@ db.query(`SELECT class.class_id, class.class_name, class.prerequisite,
         });
  };
 
+ //TO DISPLAY FILTER -- function to get degree type form 
+function getQtrOfferedForm(res, db, context, complete) {
+  console.log("In getQtrOfferedForm function");
+db.query(`SELECT * FROM class GROUP BY qtr_offered`, function(error, results, fields){
+  console.log(results);
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.classesForm = results;
+            complete();
+        });
+ };
+
+
 //TO FILTER -- get people whose academic id is equal to x
 app.get('/filter/class/:qtr_offered',function(req,res){
   var callbackCount = 0;
@@ -1101,6 +1119,7 @@ app.get('/filter/class/:qtr_offered',function(req,res){
   context.qtr_offered = req.params.qtr_offered;
   getQtrOffered (res, db, context, complete);
   getInstructor_Class(res, db, context, complete);
+ // getQtrOfferedForm(res, db, context, complete);
   console.log(context);
   function complete() {
     callbackCount++;
@@ -1311,10 +1330,10 @@ function getStudent_Degree(res, db, context, complete){
 
 //TO DISPLAY -- Function to display table in student_degree
 function getTableStudent_Degree(res, db, context, complete){
-   db.query(`SELECT student.first_name, student.last_name, student_degree.degree_id, degree.degree_type, degree.field 
+   db.query(`SELECT DISTINCT student.first_name, student.last_name, student_degree.degree_id, degree.degree_type, degree.field 
     FROM student 
-    JOIN student_degree ON student_degree.student_id = student.student_id
-    JOIN degree ON degree.degree_id = student_degree.degree_id`, function(error, results, fields){
+    LEFT JOIN student_degree ON student_degree.student_id = student.student_id
+    LEFT JOIN degree ON degree.degree_id = student_degree.degree_id`, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
@@ -1379,8 +1398,8 @@ function getInstructor_Rank (res, db, context, complete) {
   console.log("In getInstructor function");
 db.query(`SELECT student.first_name, student.last_name, student_degree.degree_id, degree.degree_type, degree.field 
     FROM student 
-    JOIN student_degree ON student_degree.student_id = student.student_id
-    JOIN degree ON degree.degree_id = student_degree.degree_id
+    LEFT JOIN student_degree ON student_degree.student_id = student.student_id
+    LEFT JOIN degree ON degree.degree_id = student_degree.degree_id
     WHERE student_degree.degree_id = ?`, [context.degree_id], function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -1410,8 +1429,8 @@ function getStudent_DegreeWithNameLike(req, res, db, context, complete) {
 //sanitize the input as well as include the % character
 var query = `SELECT student.first_name, student.last_name, student_degree.degree_id, degree.degree_type, degree.field 
     FROM student 
-    JOIN student_degree ON student_degree.student_id = student.student_id
-    JOIN degree ON degree.degree_id = student_degree.degree_id
+    LEFT JOIN student_degree ON student_degree.student_id = student.student_id
+    LEFT JOIN degree ON degree.degree_id = student_degree.degree_id
     WHERE student.first_name LIKE` + db.escape(req.params.s + '%');
  console.log(query);
       db.query(query, function(error, results, fields){

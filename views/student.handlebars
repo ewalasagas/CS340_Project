@@ -1,12 +1,11 @@
 <h1>Student List</h1>
-<p>List of students enrolled at OSU. Delete/add/filter/Search are all working!</p>
-<p>Please let us know if more features/filters should be added</p>
+<p>List of students enrolled at OSU. * Indicate required entry.</p>
 
 <h3>Add New Student</h3>
 <form id="addstudent" action="/student" method="post">
-	First Name: <input type="text" name="first_name">
+	*First Name: <input type="text" name="first_name" required>
 		<br><br>
-	Last Name: <input type="text" name="last_name">
+	*Last Name: <input type="text" name="last_name" required>
 		<br><br>
 	Enrollment Type:  <select name="enrollment_type">
 		{{#each enrollment}}

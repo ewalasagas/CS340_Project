@@ -1,0 +1,20 @@
+{
+  "name": "projectstep4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.0",
+    "express-handlebars": "^3.1.0",
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": " nodemon server.js"
+  },
+  "author": "Elaine Alasagas",
+  "license": "ISC"
+}

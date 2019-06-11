@@ -9,7 +9,6 @@
         <th>Quarter offered</th>
         <th>Instructor First</th>
         <th>Last Name</th>
-        <th>Delete</th>
         <th>Edit</th>
 </thead>
 
@@ -22,7 +21,6 @@
                 <td>{{qtr_offered}}</td>
                 <td>{{first_name}}</td>
                 <td>{{last_name}}</td>
-                <td><button onclick="deleteClass({{class_id}})">Delete</button></td>
                 <td><a href="/class/{{class_id}}">Edit</a></td> 
             </tr>
 {{/each}}

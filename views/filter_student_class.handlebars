@@ -6,7 +6,6 @@
         <th>Last Name</th>
         <th>Class ID</th> 
         <th>Class Name</th>
-        <th>Delete</th>
         <th>Edit</th>
     </thead> 
     <tbody> 
@@ -16,7 +15,6 @@
             <td>{{last_name}}</td>
             <td>{{class_id}}</td> 
             <td>{{class_name}}</td>
-            <td><button onclick="deleteStudentClass({{class_id}})">Delete</button></td>
             <td><a href="/student_class/{{class_id}}">Edit</a></td>   
         </tr>
         {{/each}} 
